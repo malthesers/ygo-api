@@ -2,13 +2,12 @@ import { Document } from 'mongoose'
 
 export type ICard = IMonsterCard | ISpellCard | ITrapCard
 
-interface ICardBase extends Document {
+export interface ICardBase extends Document {
   id: string
   name: string
   frame: Frame
   description: string
   cardType: CardType
-  type: MonsterType | SpellType | TrapType
 }
 
 export enum CardType {
@@ -17,7 +16,7 @@ export enum CardType {
   Trap = 'Trap',
 }
 
-type IMonsterCard =
+export type IMonsterCard =
   | INormalMonsterCard
   | IEffectMonsterCard
   | IFusionMonsterCard
@@ -26,62 +25,71 @@ type IMonsterCard =
   | IXyzMonsterCard
   | ILinkMonsterCard
 
-interface IMonsterCardBase extends ICardBase {
+export interface IMonsterCardBase extends ICardBase {
   cardType: CardType.Monster
   monsterCardType: MonsterCardType
   type: MonsterType
   attribute: Attribute
   atk: Atk
-  def: Def
-  level: Level
   properties?: Property[]
   pendulum?: Pendulum
 }
 
-interface INormalMonsterCard extends IMonsterCardBase {
+export interface INormalMonsterCard extends IMonsterCardBase {
   monsterCardType: MonsterCardType.Normal
   frame: Frame.Normal
+  level: Level
+  def: Def
 }
 
-interface IEffectMonsterCard extends IMonsterCardBase {
+export interface IEffectMonsterCard extends IMonsterCardBase {
   monsterCardType: MonsterCardType.Effect
   frame: Frame.Effect
+  level: Level
+  def: Def
 }
 
-interface IFusionMonsterCard extends IMonsterCardBase {
+export interface IFusionMonsterCard extends IMonsterCardBase {
   monsterCardType: MonsterCardType.Fusion
   frame: Frame.Fusion
+  level: Level
+  def: Def
 }
 
-interface IRitualMonsterCard extends IMonsterCardBase {
+export interface IRitualMonsterCard extends IMonsterCardBase {
   monsterCardType: MonsterCardType.Ritual
   frame: Frame.Ritual
+  level: Level
+  def: Def
 }
 
-interface ISynchroMonsterCard extends IMonsterCardBase {
+export interface ISynchroMonsterCard extends IMonsterCardBase {
   monsterCardType: MonsterCardType.Synchro
   frame: Frame.Synchro
+  level: Level
+  def: Def
 }
 
-interface IXyzMonsterCard extends Omit<IMonsterCardBase, 'level'> {
+export interface IXyzMonsterCard extends IMonsterCardBase {
   monsterCardType: MonsterCardType.Xyz
   frame: Frame.Xyz
   rank: Rank
+  def: Def
 }
 
-interface ILinkMonsterCard extends Omit<IMonsterCardBase, 'level' | 'def'> {
+export interface ILinkMonsterCard extends IMonsterCardBase {
   monsterCardType: MonsterCardType.Link
   frame: Frame.Link
   rating: Rating
   arrows: LinkArrows
 }
 
-interface Pendulum {
+export interface Pendulum {
   scale: Scale
   description: string
 }
 
-interface LinkArrows {
+export interface LinkArrows {
   TL?: boolean
   T?: boolean
   TR?: boolean
@@ -92,17 +100,17 @@ interface LinkArrows {
   BR?: boolean
 }
 
-type Atk = '?' | number
+export type Atk = '?' | number
 
-type Def = '?' | number
+export type Def = '?' | number
 
-type Rating = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+export type Rating = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 
-type Level = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+export type Level = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
-type Rank = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
+export type Rank = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
 
-type Scale = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
+export type Scale = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13
 
 export enum MonsterCardType {
   Normal = 'Normal',
@@ -174,7 +182,7 @@ export enum MonsterType {
   Zombie = 'Zombie',
 }
 
-interface ISpellCard extends ICardBase {
+export interface ISpellCard extends ICardBase {
   cardType: CardType.Spell
   type: SpellType
   frame: Frame.Spell
@@ -189,7 +197,7 @@ export enum SpellType {
   Ritual = 'Ritual',
 }
 
-interface ITrapCard extends ICardBase {
+export interface ITrapCard extends ICardBase {
   cardType: CardType.Trap
   type: TrapType
   frame: Frame.Trap
