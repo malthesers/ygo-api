@@ -13,9 +13,9 @@ playersRouter.get('/', async (req, res) => {
   }
 })
 
-playersRouter.get('/:id', async (req, res) => {
+playersRouter.get('/:slug', async (req, res) => {
   try {
-    const player = await PlayerModel.findById(req.params.id)
+    const player = await PlayerModel.findOne({ slug: req.params.slug })
 
     res.send(player)
   } catch (err) {
