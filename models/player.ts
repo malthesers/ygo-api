@@ -3,6 +3,7 @@ import { IPlayer } from '../interfaces/player'
 
 const playerSchema: Schema = new Schema<IPlayer>({
   name: { type: String, required: true },
+  slug: { type: String, required: true },
   nationality: { type: String, required: true },
 })
 
