@@ -10,9 +10,9 @@ export interface IEvent extends Document {
   date: string
   location: string
   attendance: number
-  winner: Types.ObjectId
-  winner2?: Types.ObjectId
-  winner3?: Types.ObjectId
+  winner: IWinner
+  winner2?: IWinner
+  winner3?: IWinner
 }
 
 export enum TopCut {
@@ -21,6 +21,11 @@ export enum TopCut {
   _32 = 32,
   _64 = 64,
   _128 = 128,
+}
+
+interface IWinner {
+  player: Types.ObjectId
+  deck: Types.ObjectId
 }
 
 type EventType = IEventTypeWCQ | IEventTypeYCS | IEventTypeTeamYCS | IEventTypeRemoteYCS

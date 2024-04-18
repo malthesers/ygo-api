@@ -14,9 +14,18 @@ const eventSchema: Schema = new Schema<IEvent>({
   date: { type: String, required: true },
   location: { type: String, required: true },
   attendance: { type: Number, required: true },
-  winner: { type: Schema.Types.ObjectId, required: true, ref: 'Player' },
-  winner2: { type: Schema.Types.ObjectId, ref: 'Player' },
-  winner3: { type: Schema.Types.ObjectId, ref: 'Player' },
+  winner: {
+    player: { type: Schema.Types.ObjectId, required: true, ref: 'Player' },
+    deck: { type: Schema.Types.ObjectId, required: true, ref: 'DeckType' },
+  },
+  winner2: {
+    player: { type: Schema.Types.ObjectId, ref: 'Player' },
+    deck: { type: Schema.Types.ObjectId, ref: 'DeckType' },
+  },
+  winner3: {
+    player: { type: Schema.Types.ObjectId, ref: 'Player' },
+    deck: { type: Schema.Types.ObjectId, ref: 'DeckType' },
+  },
 })
 
 const EventModel = model<IEvent>('Event', eventSchema)

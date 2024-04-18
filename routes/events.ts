@@ -16,9 +16,12 @@ eventsRouter.get('/', async (req, res) => {
 eventsRouter.get('/:slug', async (req, res) => {
   try {
     const event = await EventModel.findOne({ slug: req.params.slug })
-      .populate('winner')
-      .populate('winner2')
-      .populate('winner3')
+      .populate('winner.player')
+      .populate('winner.deck')
+      .populate('winner2.player')
+      .populate('winner2.deck')
+      .populate('winner3.player')
+      .populate('winner3.deck')
 
     res.send(event)
   } catch (err) {
