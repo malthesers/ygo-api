@@ -4,7 +4,7 @@
   "description": "Yu-Gi-Oh! API",
   "main": "index.ts",
   "scripts": {
-    "build": "npm install && tsc",
+    "build": "tsc",
     "start": "ts-node index.ts",
     "dev": "nodemon --exec ts-node index.ts"
   },
