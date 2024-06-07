@@ -17,7 +17,11 @@ deckTypesRouter.get('/:slug', async (req, res) => {
   try {
     const deckType = await DeckTypeModel.findOne({ slug: req.params.slug })
 
-    res.send(deckType)
+    if (deckType) {
+      res.send(deckType)
+    } else {
+      res.status(404).send({ message: `Deck type of slug "${req.params.slug}" not found` })
+    }
   } catch (err) {
     res.status(500).send(err)
   }

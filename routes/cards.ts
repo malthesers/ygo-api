@@ -17,7 +17,11 @@ cardsRouter.get('/:id', async (req, res) => {
   try {
     const card = await CardModel.findOne({ id: req.params.id })
 
-    res.send(card)
+    if (card) {
+      res.send(card)
+    } else {
+      res.status(404).send({ message: `Card with passcode ${req.params.id} not found` })
+    }
   } catch (err) {
     res.status(500).send(err)
   }

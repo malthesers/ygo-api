@@ -23,7 +23,11 @@ eventsRouter.get('/:slug', async (req, res) => {
       .populate('winner3.player')
       .populate('winner3.deck')
 
-    res.send(event)
+    if (event) {
+      res.send(event)
+    } else {
+      res.status(404).send({ message: `Event of slug "${req.params.slug}" not found` })
+    }
   } catch (err) {
     res.status(500).send(err)
   }

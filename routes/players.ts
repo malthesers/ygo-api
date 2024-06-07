@@ -17,7 +17,11 @@ playersRouter.get('/:slug', async (req, res) => {
   try {
     const player = await PlayerModel.findOne({ slug: req.params.slug })
 
-    res.send(player)
+    if (player) {
+      res.send(player)
+    } else {
+      res.status(404).send({ message: `Player of slug "${req.params.slug}" not found` })
+    }
   } catch (err) {
     res.status(500).send(err)
   }
