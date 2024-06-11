@@ -6,3 +6,8 @@ export interface IDeckType extends Document {
   engines: string[]
   thumbnail: string
 }
+
+export interface IDeckTypeTop {
+  count: number
+  deckType: IDeckType
+}
