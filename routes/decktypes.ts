@@ -33,7 +33,7 @@ deckTypesRouter.get('/top', async (req, res) => {
     const deckTypesCoverage = deckTypes.map((deckType) => ({
       ...deckType.deckType,
       count: deckType.count,
-      percentage: (deckType.count / totalDecks) * 100,
+      percentage: Number((deckType.count / totalDecks) * 100).toFixed(2),
     }))
 
     const response = {
