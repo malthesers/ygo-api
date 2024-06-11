@@ -34,8 +34,9 @@ deckTypesRouter.get('/top', async (req, res) => {
     const totalDecks: number = deckTypes.reduce((acc, curr) => acc + curr.count, 0)
 
     // Reformat deck array to include percentage coverage
-    const deckTypesCoverage = deckTypes.map((deckType) => ({
+    const deckTypesCoverage = deckTypes.map((deckType, index) => ({
       ...deckType.deckType,
+      rank: index + 1,
       count: deckType.count,
       percentage: Number((deckType.count / totalDecks) * 100).toFixed(2),
     }))
