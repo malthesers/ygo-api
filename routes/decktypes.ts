@@ -17,6 +17,8 @@ deckTypesRouter.get('/', async (req, res) => {
 
 deckTypesRouter.get('/top', async (req, res) => {
   try {
+    // Group decks by type and sort by amount
+    // Replace deckType id with data from deckType model
     const deckTypes: IDeckTypeTop[] = await DeckModel.aggregate([
       { $group: { _id: '$deckType', count: { $sum: 1 } } },
       { $sort: { count: -1 } },
@@ -28,8 +30,10 @@ deckTypesRouter.get('/top', async (req, res) => {
       res.status(404).send({ message: 'No top deck types found' })
     }
 
+    // Calculate total amount of decks
     const totalDecks: number = deckTypes.reduce((acc, curr) => acc + curr.count, 0)
 
+    // Reformat deck array to include percentage coverage
     const deckTypesCoverage = deckTypes.map((deckType) => ({
       ...deckType.deckType,
       count: deckType.count,
@@ -56,6 +60,27 @@ deckTypesRouter.get('/:slug', async (req, res) => {
     } else {
       res.status(404).send({ message: `Deck type of slug "${req.params.slug}" not found` })
     }
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
+deckTypesRouter.get('/:slug/tops', async (req, res) => {
+  try {
+    const deckType = await DeckTypeModel.findOne({ slug: req.params.slug })
+
+    if (!deckType) {
+      res.status(404).send({ message: `Deck type of slug "${req.params.slug}" not found` })
+    }
+
+    const decks = await DeckModel.find({ deckType: deckType?._id }).populate('player')
+
+    const response = {
+      ...deckType?.toObject(),
+      decks,
+    }
+
+    res.send(response)
   } catch (err) {
     res.status(500).send(err)
   }
