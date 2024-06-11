@@ -1,5 +1,6 @@
 import express from 'express'
 import EventModel from '../models/event'
+import DeckModel from '../models/deck'
 
 const eventsRouter = express.Router()
 
@@ -23,11 +24,18 @@ eventsRouter.get('/:slug', async (req, res) => {
       .populate('winner3.player')
       .populate('winner3.deck')
 
-    if (event) {
-      res.send(event)
-    } else {
+    if (!event) {
       res.status(404).send({ message: `Event of slug "${req.params.slug}" not found` })
     }
+
+    const decks = await DeckModel.find({ event: event?._id }).populate('deckType').populate('player')
+
+    const response = {
+      ...event?.toObject(),
+      decks,
+    }
+
+    res.send(response)
   } catch (err) {
     res.status(500).send(err)
   }
