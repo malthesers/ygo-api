@@ -14,12 +14,12 @@ decksRouter.get('/:id', async (req, res) => {
       .populate('decklist.sideDeck.card')
 
     if (deck) {
-      res.send(deck)
+      return res.send(deck)
     } else {
-      res.status(404).send({ message: 'Deck not found' })
+      return res.status(404).send({ message: 'Deck not found' })
     }
   } catch (err) {
-    res.status(500).send(err)
+    return res.status(500).send(err)
   }
 })
 

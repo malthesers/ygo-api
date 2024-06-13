@@ -14,7 +14,7 @@ connect()
 setupRoutes(app)
 
 app.get('/', (req, res) => {
-  res.send('YGOApi')
+  return res.send('YGOApi')
 })
 
 app.listen(PORT, () => {

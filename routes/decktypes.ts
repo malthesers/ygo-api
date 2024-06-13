@@ -9,9 +9,9 @@ deckTypesRouter.get('/', async (req, res) => {
   try {
     const deckTypes = await DeckTypeModel.find({}).limit(10)
 
-    res.send(deckTypes)
+    return res.send(deckTypes)
   } catch (err) {
-    res.status(500).send(err)
+    return res.status(500).send(err)
   }
 })
 
@@ -49,7 +49,7 @@ deckTypesRouter.get('/top', async (req, res) => {
     ])
 
     if (!deckTypes) {
-      res.status(404).send({ message: 'No top deck types found' })
+      return res.status(404).send({ message: 'No top deck types found' })
     }
 
     // Calculate total amount of decks
@@ -74,9 +74,9 @@ deckTypesRouter.get('/top', async (req, res) => {
       deckTypes: deckTypesCoverage,
     }
 
-    res.send(response)
+    return res.send(response)
   } catch (err) {
-    res.status(500).send(err)
+    return res.status(500).send(err)
   }
 })
 
@@ -85,12 +85,12 @@ deckTypesRouter.get('/:slug', async (req, res) => {
     const deckType = await DeckTypeModel.findOne({ slug: req.params.slug })
 
     if (deckType) {
-      res.send(deckType)
+      return res.send(deckType)
     } else {
-      res.status(404).send({ message: `Deck type of slug "${req.params.slug}" not found` })
+      return res.status(404).send({ message: `Deck type of slug "${req.params.slug}" not found` })
     }
   } catch (err) {
-    res.status(500).send(err)
+    return res.status(500).send(err)
   }
 })
 
@@ -99,7 +99,7 @@ deckTypesRouter.get('/:slug/tops', async (req, res) => {
     const deckType = await DeckTypeModel.findOne({ slug: req.params.slug })
 
     if (!deckType) {
-      res.status(404).send({ message: `Deck type of slug "${req.params.slug}" not found` })
+      return res.status(404).send({ message: `Deck type of slug "${req.params.slug}" not found` })
     }
 
     const decks = await DeckModel.find({ deckType: deckType?._id }).populate('event').populate('player')
@@ -109,9 +109,9 @@ deckTypesRouter.get('/:slug/tops', async (req, res) => {
       decks,
     }
 
-    res.send(response)
+    return res.send(response)
   } catch (err) {
-    res.status(500).send(err)
+    return res.status(500).send(err)
   }
 })
 
