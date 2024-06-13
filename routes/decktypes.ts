@@ -35,7 +35,7 @@ deckTypesRouter.get('/top', async (req, res) => {
             { $lookup: { from: 'players', localField: 'player', foreignField: '_id', as: 'player' } },
             { $addFields: { event: { $arrayElemAt: ['$event', 0] }, player: { $arrayElemAt: ['$player', 0] } } },
           ],
-          as: 'bestPerformance',
+          as: 'mostSuccessful',
         },
       },
       {
@@ -43,7 +43,7 @@ deckTypesRouter.get('/top', async (req, res) => {
           _id: 0,
           count: 1,
           deckType: { $arrayElemAt: ['$deckType', 0] },
-          bestPerformance: { $arrayElemAt: ['$bestPerformance', 0] },
+          mostSuccessful: { $arrayElemAt: ['$mostSuccessful', 0] },
         },
       },
     ])
@@ -61,11 +61,11 @@ deckTypesRouter.get('/top', async (req, res) => {
       rank: index + 1,
       count: deckType.count,
       percentage: Number((deckType.count / totalDecks) * 100).toFixed(2),
-      bestPerformance: {
-        placement: deckType.bestPerformance.placement,
-        player: deckType.bestPerformance.player.name,
-        event: deckType.bestPerformance.event.name,
-        _id: deckType.bestPerformance._id,
+      mostSuccessful: {
+        placement: deckType.mostSuccessful.placement,
+        player: deckType.mostSuccessful.player.name,
+        event: deckType.mostSuccessful.event.name,
+        _id: deckType.mostSuccessful._id,
       },
     }))
 

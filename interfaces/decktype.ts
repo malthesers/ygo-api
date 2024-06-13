@@ -14,7 +14,7 @@ export interface IDeckTypeTop {
   rank: number
   count: number
   deckType: IDeckType
-  bestPerformance: {
+  mostSuccessful: {
     placement: Placement
     player: IPlayer
     event: IEvent
