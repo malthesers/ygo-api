@@ -5,7 +5,7 @@ export interface IDeck extends Document {
   event: Types.ObjectId
   player: Types.ObjectId
   placement: Placement
-  decklist: IDecklist
+  decklist?: IDecklist
 }
 
 export enum Placement {
