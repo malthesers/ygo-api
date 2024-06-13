@@ -1,5 +1,5 @@
-import { Document } from 'mongoose'
-import { IDeck, Placement } from './deck'
+import { Document, Types } from 'mongoose'
+import { Placement } from './deck'
 import { IEvent } from './event'
 import { IPlayer } from './player'
 
@@ -18,5 +18,6 @@ export interface IDeckTypeTop {
     placement: Placement
     player: IPlayer
     event: IEvent
+    _id: Types.ObjectId
   }
 }

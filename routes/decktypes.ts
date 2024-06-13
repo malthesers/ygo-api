@@ -65,6 +65,7 @@ deckTypesRouter.get('/top', async (req, res) => {
         placement: deckType.bestPerformance.placement,
         player: deckType.bestPerformance.player.name,
         event: deckType.bestPerformance.event.name,
+        _id: deckType.bestPerformance._id,
       },
     }))
 
