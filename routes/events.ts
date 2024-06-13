@@ -29,9 +29,12 @@ eventsRouter.get('/type/:slug', async (req, res) => {
     const events = await EventModel.aggregate([
       { $match: { 'type.slug': req.params.slug } },
       { $lookup: { from: 'players', localField: 'winner.player', foreignField: '_id', as: 'winner.player' } },
+      { $unwind: '$winner.player' },
       { $lookup: { from: 'decks', localField: 'winner.deck', foreignField: '_id', as: 'winner.deck' } },
+      { $unwind: '$winner.deck' },
       { $lookup: { from: 'decktypes', localField: 'winner.deck.deckType', foreignField: '_id', as: 'deckType' } },
       { $addFields: { 'winner.deck.deckType': '$deckType' } },
+      { $unwind: '$winner.deck.deckType' },
       { $project: { deckType: 0 } },
     ])
 
