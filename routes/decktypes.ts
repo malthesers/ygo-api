@@ -61,7 +61,7 @@ deckTypesRouter.get('/top', async (req, res) => {
       rank: index + 1,
       count: deckType.count,
       percentage: Number((deckType.count / totalDecks) * 100).toFixed(2),
-      bestPeformance: {
+      bestPerformance: {
         placement: deckType.bestPerformance.placement,
         player: deckType.bestPerformance.player.name,
         event: deckType.bestPerformance.event.name,
