@@ -18,6 +18,36 @@ eventsRouter.get('/', async (req, res) => {
   }
 })
 
+eventsRouter.get('/recent', async (req, res) => {
+  try {
+    const events = await EventModel.find({}).sort({ startDate: 'descending' }).limit(4)
+
+    if (!events || events.length === 0) {
+      return res.status(404).send({ message: 'No events found' })
+    }
+
+    return res.send(events)
+  } catch (err) {
+    return res.status(500).send(err)
+  }
+})
+
+eventsRouter.get('/recent/:limit', async (req, res) => {
+  const limit = parseInt(req.params.limit) || 4
+
+  try {
+    const events = await EventModel.find({}).sort({ startDate: 'descending' }).limit(limit)
+
+    if (!events || events.length === 0) {
+      return res.status(404).send({ message: 'No events found' })
+    }
+
+    return res.send(events)
+  } catch (err) {
+    return res.status(500).send(err)
+  }
+})
+
 eventsRouter.get('/type/:slug', async (req, res) => {
   const eventTypes = ['wcq', 'ycs', 'team-ycs', 'remote-ycs']
 
