@@ -48,6 +48,12 @@ eventsRouter.get('/recent/:limit', async (req, res) => {
   }
 })
 
+eventsRouter.get('/type', (req, res) => {
+  const eventTypes = ['wcq', 'ycs', 'team-ycs', 'remote-ycs']
+
+  return res.send({ message: 'The following event types are valid slugs for the /type/:slug endpoint', eventTypes })
+})
+
 eventsRouter.get('/type/:slug', async (req, res) => {
   const eventTypes = ['wcq', 'ycs', 'team-ycs', 'remote-ycs']
 
