@@ -26,17 +26,11 @@ eventsRouter.get('/type/:slug', async (req, res) => {
   }
 
   try {
-    const events = await EventModel.aggregate([
-      { $match: { 'type.slug': req.params.slug } },
-      { $lookup: { from: 'players', localField: 'winner.player', foreignField: '_id', as: 'winner.player' } },
-      { $unwind: '$winner.player' },
-      { $lookup: { from: 'decks', localField: 'winner.deck', foreignField: '_id', as: 'winner.deck' } },
-      { $unwind: '$winner.deck' },
-      { $lookup: { from: 'decktypes', localField: 'winner.deck.deckType', foreignField: '_id', as: 'deckType' } },
-      { $addFields: { 'winner.deck.deckType': '$deckType' } },
-      { $unwind: '$winner.deck.deckType' },
-      { $project: { deckType: 0 } },
-    ])
+    const events = await EventModel.find({ 'type.slug': req.params.slug })
+      .populate(['winner.player', 'winner2.player', 'winner3.player'])
+      .populate({ path: 'winner.deck', populate: { path: 'deckType' } })
+      .populate({ path: 'winner2.deck', populate: { path: 'deckType' } })
+      .populate({ path: 'winner3.deck', populate: { path: 'deckType' } })
 
     if (!events) {
       return res.status(404).send({ message: `Events of slug "${req.params.slug}" not found` })
@@ -51,12 +45,10 @@ eventsRouter.get('/type/:slug', async (req, res) => {
 eventsRouter.get('/:slug', async (req, res) => {
   try {
     const event = await EventModel.findOne({ slug: req.params.slug })
-      .populate('winner.player')
-      .populate('winner.deck')
-      .populate('winner2.player')
-      .populate('winner2.deck')
-      .populate('winner3.player')
-      .populate('winner3.deck')
+      .populate(['winner.player', 'winner2.player', 'winner3.player'])
+      .populate({ path: 'winner.deck', populate: { path: 'deckType' } })
+      .populate({ path: 'winner2.deck', populate: { path: 'deckType' } })
+      .populate({ path: 'winner3.deck', populate: { path: 'deckType' } })
 
     if (!event) {
       return res.status(404).send({ message: `Event of slug "${req.params.slug}" not found` })

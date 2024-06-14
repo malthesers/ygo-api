@@ -10,21 +10,21 @@ const eventSchema: Schema = new Schema<IEvent>({
     slug: { type: String, required: true },
   },
   topcut: { type: Number, required: true, enum: Object.values(TopCut) },
-  year: { type: Number, required: true },
-  date: { type: String, required: true },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date, required: true },
   location: { type: String, required: true },
   attendance: { type: Number, required: true },
   winner: {
     player: { type: Schema.Types.ObjectId, required: true, ref: 'Player' },
-    deck: { type: Schema.Types.ObjectId, required: true, ref: 'DeckType' },
+    deck: { type: Schema.Types.ObjectId, required: true, ref: 'Deck' },
   },
   winner2: {
     player: { type: Schema.Types.ObjectId, ref: 'Player' },
-    deck: { type: Schema.Types.ObjectId, ref: 'DeckType' },
+    deck: { type: Schema.Types.ObjectId, ref: 'Deck' },
   },
   winner3: {
     player: { type: Schema.Types.ObjectId, ref: 'Player' },
-    deck: { type: Schema.Types.ObjectId, ref: 'DeckType' },
+    deck: { type: Schema.Types.ObjectId, ref: 'Deck' },
   },
 })
 

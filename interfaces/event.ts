@@ -6,8 +6,8 @@ export interface IEvent extends Document {
   thumbnail: string
   type: EventType
   topcut: TopCut
-  year: number
-  date: string
+  startDate: Date
+  endDate: Date
   location: string
   attendance: number
   winner: IWinner
@@ -23,6 +23,8 @@ export enum TopCut {
   _128 = 128,
   _256 = 256,
 }
+
+export type WinnerStr = 'winner' | 'winner2' | 'winner3'
 
 interface IWinner {
   player: Types.ObjectId
