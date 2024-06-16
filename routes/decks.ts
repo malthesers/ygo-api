@@ -5,13 +5,14 @@ const decksRouter = express.Router()
 
 decksRouter.get('/:id', async (req, res) => {
   try {
-    const deck = await DeckModel.findById(req.params.id)
-      .populate('deckType')
-      .populate('event')
-      .populate('player')
-      .populate('decklist.mainDeck.card')
-      .populate('decklist.extraDeck.card')
-      .populate('decklist.sideDeck.card')
+    const deck = await DeckModel.findById(req.params.id).populate([
+      'deckType',
+      'event',
+      'player',
+      'decklist.mainDeck.card',
+      'decklist.extraDeck.card',
+      'decklist.sideDeck.card',
+    ])
 
     if (deck) {
       return res.send(deck)

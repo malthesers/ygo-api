@@ -2,6 +2,7 @@ import express from 'express'
 import DeckTypeModel from '../models/decktype'
 import DeckModel from '../models/deck'
 import { IDeckTypeTop } from '../interfaces/decktype'
+import mostPopularDeckTypesPipeline from '../pipelines/mostPopularDeckTypes'
 
 const deckTypesRouter = express.Router()
 
@@ -19,34 +20,7 @@ deckTypesRouter.get('/top', async (req, res) => {
   try {
     // Group decks by type and sort by amount
     // Replace deckType id with data from deckType model
-    const deckTypes: IDeckTypeTop[] = await DeckModel.aggregate([
-      { $group: { _id: '$deckType', count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $lookup: { from: 'decktypes', localField: '_id', foreignField: '_id', as: 'deckType' } },
-      {
-        $lookup: {
-          from: 'decks',
-          let: { deckTypeId: '$_id' },
-          pipeline: [
-            { $match: { $expr: { $eq: ['$deckType', '$$deckTypeId'] } } },
-            { $sort: { placement: 1 } },
-            { $limit: 1 },
-            { $lookup: { from: 'events', localField: 'event', foreignField: '_id', as: 'event' } },
-            { $lookup: { from: 'players', localField: 'player', foreignField: '_id', as: 'player' } },
-            { $addFields: { event: { $arrayElemAt: ['$event', 0] }, player: { $arrayElemAt: ['$player', 0] } } },
-          ],
-          as: 'mostSuccessful',
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          count: 1,
-          deckType: { $arrayElemAt: ['$deckType', 0] },
-          mostSuccessful: { $arrayElemAt: ['$mostSuccessful', 0] },
-        },
-      },
-    ])
+    const deckTypes: IDeckTypeTop[] = await DeckModel.aggregate(mostPopularDeckTypesPipeline)
 
     if (!deckTypes) {
       return res.status(404).send({ message: 'No top deck types found' })
