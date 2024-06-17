@@ -76,7 +76,7 @@ deckTypesRouter.get('/:slug/tops', async (req, res) => {
       return res.status(404).send({ message: `Deck type of slug "${req.params.slug}" not found` })
     }
 
-    const decks = await DeckModel.find({ deckType: deckType?._id }).populate('event').populate('player')
+    const decks = await DeckModel.find({ deckType: deckType?._id }).populate(['deckType', 'event', 'player'])
 
     const response = {
       ...deckType?.toObject(),
