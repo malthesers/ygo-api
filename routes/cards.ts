@@ -1,14 +1,27 @@
 import express from 'express'
 import CardModel from '../models/card'
 import DeckModel from '../models/deck'
+import getCardsQuery from '../queries/getCardsQuery'
 
 const cardsRouter = express.Router()
 
 cardsRouter.get('/', async (req, res) => {
-  try {
-    const cards = await CardModel.find({}).limit(10)
+  const query = getCardsQuery(req)
+  const limit = 20
+  const page = parseInt(req.query['page'] as string)
 
-    return res.send(cards)
+  try {
+    const cards = await CardModel.find(query)
+      .sort({ name: 'asc' })
+      .limit(limit)
+      .skip(page * limit)
+
+    const response = {
+      length: cards.length,
+      cards,
+    }
+
+    return res.send(response)
   } catch (err) {
     return res.status(500).send(err)
   }
