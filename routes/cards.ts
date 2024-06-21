@@ -42,6 +42,22 @@ cardsRouter.get('/popular', async (req, res) => {
   }
 })
 
+cardsRouter.get('/popular/:limit', async (req, res) => {
+  const limit = parseInt(req.params.limit) || 6
+
+  try {
+    const cards = await DeckModel.aggregate(mostPopularCardsPipeline).limit(limit)
+
+    if (!cards || cards.length === 0) {
+      return res.status(404).send({ message: 'No popular cards found' })
+    }
+
+    return res.send(cards)
+  } catch (err) {
+    return res.status(500).send(err)
+  }
+})
+
 cardsRouter.get('/:id', async (req, res) => {
   try {
     const card = await CardModel.findOne({ id: req.params.id })
