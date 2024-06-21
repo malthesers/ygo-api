@@ -6,7 +6,12 @@ const eventsRouter = express.Router()
 
 eventsRouter.get('/', async (req, res) => {
   try {
-    const events = await EventModel.find({}).sort({ startDate: 'descending' })
+    const events = await EventModel.find({})
+      .sort({ startDate: 'descending' })
+      .populate(['winner.player', 'winner2.player', 'winner3.player'])
+      .populate({ path: 'winner.deck', populate: { path: 'deckType' } })
+      .populate({ path: 'winner2.deck', populate: { path: 'deckType' } })
+      .populate({ path: 'winner3.deck', populate: { path: 'deckType' } })
 
     if (!events) {
       return res.status(404).send({ message: 'No events found' })
