@@ -18,8 +18,6 @@ deckTypesRouter.get('/', async (req, res) => {
 
 deckTypesRouter.get('/top', async (req, res) => {
   try {
-    // Group decks by type and sort by amount
-    // Replace deckType id with data from deckType model
     const deckTypes: IDeckTypeTop[] = await DeckModel.aggregate(mostPopularDeckTypesPipeline)
 
     if (!deckTypes) {

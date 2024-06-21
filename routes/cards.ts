@@ -2,6 +2,7 @@ import express from 'express'
 import CardModel from '../models/card'
 import DeckModel from '../models/deck'
 import getCardsQuery from '../queries/getCardsQuery'
+import mostPopularCardsPipeline from '../pipelines/mostPopularCards'
 
 const cardsRouter = express.Router()
 
@@ -22,6 +23,20 @@ cardsRouter.get('/', async (req, res) => {
     }
 
     return res.send(response)
+  } catch (err) {
+    return res.status(500).send(err)
+  }
+})
+
+cardsRouter.get('/popular', async (req, res) => {
+  try {
+    const cards = await DeckModel.aggregate(mostPopularCardsPipeline)
+
+    if (!cards) {
+      return res.status(404).send({ message: 'No popular cards found' })
+    }
+
+    return res.send(cards)
   } catch (err) {
     return res.status(500).send(err)
   }
