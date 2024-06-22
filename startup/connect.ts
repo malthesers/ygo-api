@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose'
+import mongoose from 'mongoose'
 
 export default () => {
   if (!process.env.MONGO_URI) {
