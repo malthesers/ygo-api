@@ -1,0 +1,638 @@
+{
+  "openapi" : "3.0.0",
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/MALTHEKUSK/ygo-api/1.0.0"
+  } ],
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "YGO API",
+    "description" : "YGO API"
+  },
+  "paths" : {
+    "/players" : {
+      "get" : {
+        "summary" : "Get all players",
+        "description" : "Returns an array of players and their related information.",
+        "tags" : [ "players" ],
+        "responses" : {
+          "200" : {
+            "description" : "Array of player information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Player"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/players/{slug}" : {
+      "get" : {
+        "summary" : "Get player by slug",
+        "description" : "Returns player information including name, nationality, and socials based on slug.",
+        "tags" : [ "players" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "slug",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Player information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Player"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events" : {
+      "get" : {
+        "summary" : "Get all events",
+        "description" : "Returns an array of events and their related information.",
+        "tags" : [ "events" ],
+        "responses" : {
+          "200" : {
+            "description" : "Array of event information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/recent" : {
+      "get" : {
+        "summary" : "Get 4 most recent events",
+        "description" : "Returns an array of recent events and their related information.",
+        "tags" : [ "events" ],
+        "responses" : {
+          "200" : {
+            "description" : "Array of event information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/recent/{limit}" : {
+      "get" : {
+        "summary" : "Get most recent events limited by parameter",
+        "description" : "Returns an array of recent events and their related information limited to the amount of the parameter.",
+        "tags" : [ "events" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "limit",
+          "schema" : {
+            "type" : "integer"
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Array of event information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/type" : {
+      "get" : {
+        "summary" : "Get list of event types.",
+        "description" : "Returns a list of valid slugs for the /events/type/{slug} endpoint.",
+        "tags" : [ "events" ],
+        "responses" : {
+          "200" : {
+            "description" : "Array of event information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "message" : {
+                      "description" : "Message regarding event types",
+                      "type" : "string",
+                      "example" : "The following event types are valid slugs for the /type/:slug endpoint:"
+                    },
+                    "eventTypes" : {
+                      "description" : "List of event types",
+                      "type" : "array",
+                      "items" : {
+                        "type" : "string",
+                        "example" : [ "wcq", "ycs", "team-ycs", "remote-ycs" ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/type/{slug}" : {
+      "get" : {
+        "summary" : "Get all events of a type based on slug.",
+        "description" : "Returns an array of events of a type and their related information.",
+        "tags" : [ "events" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "slug",
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "wcq", "ycs", "team-ycs", "remote-ycs" ]
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Array of event information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/{slug}" : {
+      "get" : {
+        "summary" : "Get event by slug",
+        "description" : "Returns event information based on slug.",
+        "tags" : [ "events" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "slug",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Event information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decktypes" : {
+      "get" : {
+        "summary" : "Get all deck types",
+        "description" : "Returns an array of deck types and their related information.",
+        "tags" : [ "decktypes" ],
+        "responses" : {
+          "200" : {
+            "description" : "Array of deck type information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/DeckType"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decktypes/{slug}" : {
+      "get" : {
+        "summary" : "Get deck type by slug",
+        "description" : "Returns deck type and related information based on slug.",
+        "tags" : [ "decktypes" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "slug",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Deck type information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeckType"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decktypes/{slug}/tops" : {
+      "get" : {
+        "summary" : "Get deck type by slug with topping decklists",
+        "description" : "Returns deck type, related information and topping decklists based on slug.",
+        "tags" : [ "decktypes", "decks" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "slug",
+          "schema" : {
+            "type" : "string"
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Deck type information and decklists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeckType"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decktypes/top" : {
+      "get" : {
+        "summary" : "Get top deck types",
+        "description" : "Returns an object of total deck types and an array of best deck types and their related information.",
+        "tags" : [ "decktypes" ],
+        "responses" : {
+          "200" : {
+            "description" : "Top deck types information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "totalDecks" : {
+                      "type" : "integer",
+                      "example" : 1
+                    },
+                    "deckTypes" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/TopDeckType"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/decks/{id}" : {
+      "get" : {
+        "summary" : "Get decklist by id",
+        "description" : "Returns an object of a decklist and information regarding the player, event, deck type and placement.",
+        "tags" : [ "decks" ],
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "schema" : {
+            "type" : "number"
+          },
+          "required" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Top deck types information",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Decklist"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Player" : {
+        "type" : "object",
+        "required" : [ "_id", "name", "slug", "nationality" ],
+        "properties" : {
+          "_id" : {
+            "type" : "string",
+            "example" : "660dc8c51e76999615f9e39f"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Joshua Schmidt"
+          },
+          "slug" : {
+            "type" : "string",
+            "example" : "joshua-schmidt"
+          },
+          "nationality" : {
+            "type" : "string",
+            "example" : "DE"
+          },
+          "socials" : {
+            "description" : "Object of links to the player's socials",
+            "type" : "object",
+            "properties" : {
+              "youtube" : {
+                "type" : "string",
+                "example" : "JoshuaSchmidtYGO"
+              },
+              "twitch" : {
+                "type" : "string",
+                "example" : "joshuaschmidtygo"
+              },
+              "twitter" : {
+                "type" : "string",
+                "example" : "Gamebreak0r"
+              }
+            }
+          }
+        }
+      },
+      "Event" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "object",
+            "properties" : {
+              "name" : {
+                "description" : "The name of the event type",
+                "type" : "string",
+                "example" : "YCS"
+              },
+              "slug" : {
+                "description" : "The slug of the event type",
+                "type" : "string",
+                "example" : "ycs"
+              }
+            },
+            "description" : "The type of the event"
+          },
+          "winner" : {
+            "$ref" : "#/components/schemas/Winner"
+          },
+          "_id" : {
+            "description" : "The id of the event",
+            "type" : "string",
+            "example" : "6620d3648d69215e8c9efe74"
+          },
+          "name" : {
+            "description" : "The name of the event",
+            "type" : "string",
+            "example" : "YCS Bologna 2023"
+          },
+          "slug" : {
+            "description" : "The slug of the event",
+            "type" : "string",
+            "example" : "bologna-2023"
+          },
+          "thumbnail" : {
+            "description" : "The image identifier used to represent the event",
+            "type" : "string",
+            "example" : "bologna"
+          },
+          "topcut" : {
+            "description" : "The top cut of the event",
+            "type" : "integer",
+            "example" : 64
+          },
+          "location" : {
+            "description" : "The location of the event",
+            "type" : "string",
+            "example" : "Bologna, Italy"
+          },
+          "attendance" : {
+            "description" : "The attendance of the event",
+            "type" : "integer",
+            "example" : 2488
+          },
+          "endDate" : {
+            "description" : "The end date of the event",
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2023-12-10T00:00:00.000Z"
+          },
+          "startDate" : {
+            "description" : "The start date of the event",
+            "type" : "string",
+            "format" : "date-time",
+            "example" : "2023-12-09T00:00:00.000Z"
+          }
+        }
+      },
+      "DeckType" : {
+        "type" : "object",
+        "required" : [ "_id", "name", "slug", "engines", "thumbnail" ],
+        "properties" : {
+          "_id" : {
+            "description" : "The id of the deck type",
+            "type" : "string",
+            "example" : "6613201cdcb8246e3a5b59d1"
+          },
+          "name" : {
+            "description" : "The name of the deck type",
+            "type" : "string",
+            "example" : "Runick Bystial"
+          },
+          "slug" : {
+            "description" : "The slug for the deck type",
+            "type" : "string",
+            "example" : "runick-bystial"
+          },
+          "engines" : {
+            "description" : "An array of engines used in the deck type",
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            },
+            "example" : [ "Runick", "Bystial" ]
+          },
+          "thumbnail" : {
+            "description" : "The passcode of the card used to represent the deck type",
+            "type" : "string",
+            "example" : 92107604
+          }
+        }
+      },
+      "TopDeckType" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/DeckType"
+        }, {
+          "type" : "object",
+          "required" : [ "rank", "count", "percentage", "mostSuccesful" ],
+          "properties" : {
+            "rank" : {
+              "description" : "The placement of the deck type relative to other deck types",
+              "type" : "integer",
+              "example" : 7
+            },
+            "count" : {
+              "description" : "The total amount of topping decks of the deck type",
+              "type" : "integer",
+              "example" : 1
+            },
+            "percentage" : {
+              "description" : "The percentage of topping decks of the deck type",
+              "type" : "string",
+              "example" : 5.88
+            },
+            "mostSuccessful" : {
+              "type" : "object",
+              "required" : [ "_id", "placement", "player", "event" ],
+              "properties" : {
+                "_id" : {
+                  "description" : "Id of decklist",
+                  "type" : "string",
+                  "example" : "6662f76ed85c2977d3561c3c"
+                },
+                "placement" : {
+                  "description" : "The placement of the decklist",
+                  "type" : "integer",
+                  "example" : 1
+                },
+                "player" : {
+                  "description" : "Name of the player",
+                  "type" : "string",
+                  "example" : "Joshua Schmidt"
+                },
+                "event" : {
+                  "description" : "Name of the event",
+                  "type" : "string",
+                  "example" : "YCS Bologna 2023"
+                }
+              }
+            }
+          }
+        } ]
+      },
+      "Decklist" : {
+        "type" : "object",
+        "required" : [ "_id", "placement", "deckType", "event", "player" ],
+        "properties" : {
+          "_id" : {
+            "description" : "The id of the decklist",
+            "type" : "string",
+            "example" : "6662f76ed85c2977d3561c3c"
+          },
+          "placement" : {
+            "description" : "Placement of the decklist at the event",
+            "type" : "integer",
+            "example" : 1
+          },
+          "deckType" : {
+            "$ref" : "#/components/schemas/DeckType"
+          },
+          "event" : {
+            "$ref" : "#/components/schemas/Event"
+          },
+          "player" : {
+            "$ref" : "#/components/schemas/Player"
+          },
+          "decklist" : {
+            "description" : "The decklist itself",
+            "type" : "object",
+            "properties" : {
+              "mainDeck" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/Card"
+                }
+              },
+              "extraDeck" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/Card"
+                }
+              },
+              "sideDeck" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/Card"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Winner" : {
+        "type" : "object",
+        "required" : [ "deck", "player" ],
+        "properties" : {
+          "deck" : {
+            "$ref" : "#/components/schemas/Decklist"
+          },
+          "player" : {
+            "$ref" : "#/components/schemas/Player"
+          }
+        }
+      },
+      "Card" : {
+        "type" : "object",
+        "properties" : {
+          "count" : {
+            "description" : "Amount of copies",
+            "type" : "number",
+            "enum" : [ 1, 2, 3 ]
+          },
+          "card" : {
+            "description" : "Id of the card",
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
