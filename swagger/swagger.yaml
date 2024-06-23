@@ -1,0 +1,514 @@
+openapi: 3.0.0
+info:
+  title: YGO API
+  description: YGO API
+  version: 1.0.0
+servers:
+  - url: https://virtserver.swaggerhub.com/MALTHEKUSK/ygo-api/1.0.0
+    description: SwaggerHub API Auto Mocking
+paths:
+  /players:
+    get:
+      tags:
+        - players
+      summary: Get all players
+      description: Returns an array of players and their related information.
+      responses:
+        '200':
+          description: Array of player information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+  /players/{slug}:
+    get:
+      tags:
+        - players
+      summary: Get player by slug
+      description: 'Returns player information including name, nationality, and socials based on slug.'
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Player information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+  /events:
+    get:
+      tags:
+        - events
+      summary: Get all events
+      description: Returns an array of events and their related information.
+      responses:
+        '200':
+          description: Array of event information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /events/recent:
+    get:
+      tags:
+        - events
+      summary: Get 4 most recent events
+      description: Returns an array of recent events and their related information.
+      responses:
+        '200':
+          description: Array of event information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /events/recent/{limit}:
+    get:
+      tags:
+        - events
+      summary: Get most recent events limited by parameter
+      description: Returns an array of recent events and their related information limited to the amount of the parameter.
+      parameters:
+        - name: limit
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Array of event information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /events/type:
+    get:
+      tags:
+        - events
+      summary: Get list of event types.
+      description: 'Returns a list of valid slugs for the /events/type/{slug} endpoint.'
+      responses:
+        '200':
+          description: Array of event information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+  /events/type/{slug}:
+    get:
+      tags:
+        - events
+      summary: Get all events of a type based on slug.
+      description: Returns an array of events of a type and their related information.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            enum:
+              - wcq
+              - ycs
+              - team-ycs
+              - remote-ycs
+      responses:
+        '200':
+          description: Array of event information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+  /events/{slug}:
+    get:
+      tags:
+        - events
+      summary: Get event by slug
+      description: Returns event information based on slug.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Event information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+  /decktypes:
+    get:
+      tags:
+        - decktypes
+      summary: Get all deck types
+      description: Returns an array of deck types and their related information.
+      responses:
+        '200':
+          description: Array of deck type information
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeckType'
+  /decktypes/{slug}:
+    get:
+      tags:
+        - decktypes
+      summary: Get deck type by slug
+      description: Returns deck type and related information based on slug.
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deck type information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeckType'
+  /decktypes/{slug}/tops:
+    get:
+      tags:
+        - decktypes
+        - decks
+      summary: Get deck type by slug with topping decklists
+      description: 'Returns deck type, related information and topping decklists based on slug.'
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deck type information and decklists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeckType'
+  /decktypes/top:
+    get:
+      tags:
+        - decktypes
+      summary: Get top deck types
+      description: Returns an object of total deck types and an array of best deck types and their related information.
+      responses:
+        '200':
+          description: Top deck types information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+  /decks/{id}:
+    get:
+      tags:
+        - decks
+      summary: Get decklist by id
+      description: 'Returns an object of a decklist and information regarding the player, event, deck type and placement.'
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Top deck types information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Decklist'
+components:
+  schemas:
+    Player:
+      required:
+        - _id
+        - name
+        - nationality
+        - slug
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 660dc8c51e76999615f9e39f
+        name:
+          type: string
+          example: Joshua Schmidt
+        slug:
+          type: string
+          example: joshua-schmidt
+        nationality:
+          type: string
+          example: DE
+        socials:
+          $ref: '#/components/schemas/Player_socials'
+    Event:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/Event_type'
+        winner:
+          $ref: '#/components/schemas/Winner'
+        _id:
+          type: string
+          description: The id of the event
+          example: 6620d3648d69215e8c9efe74
+        name:
+          type: string
+          description: The name of the event
+          example: YCS Bologna 2023
+        slug:
+          type: string
+          description: The slug of the event
+          example: bologna-2023
+        thumbnail:
+          type: string
+          description: The image identifier used to represent the event
+          example: bologna
+        topcut:
+          type: integer
+          description: The top cut of the event
+          example: 64
+        location:
+          type: string
+          description: The location of the event
+          example: 'Bologna, Italy'
+        attendance:
+          type: integer
+          description: The attendance of the event
+          example: 2488
+        endDate:
+          type: string
+          description: The end date of the event
+          format: date-time
+          example: 2023-12-10T00:00:00Z
+        startDate:
+          type: string
+          description: The start date of the event
+          format: date-time
+          example: 2023-12-09T00:00:00Z
+    DeckType:
+      required:
+        - _id
+        - engines
+        - name
+        - slug
+        - thumbnail
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The id of the deck type
+          example: 6613201cdcb8246e3a5b59d1
+        name:
+          type: string
+          description: The name of the deck type
+          example: Runick Bystial
+        slug:
+          type: string
+          description: The slug for the deck type
+          example: runick-bystial
+        engines:
+          type: array
+          description: An array of engines used in the deck type
+          example:
+            - Runick
+            - Bystial
+          items:
+            type: string
+        thumbnail:
+          type: string
+          description: The passcode of the card used to represent the deck type
+          example: '92107604'
+    TopDeckType:
+      allOf:
+        - $ref: '#/components/schemas/DeckType'
+        - required:
+            - count
+            - mostSuccesful
+            - percentage
+            - rank
+          type: object
+          properties:
+            rank:
+              type: integer
+              description: The placement of the deck type relative to other deck types
+              example: 7
+            count:
+              type: integer
+              description: The total amount of topping decks of the deck type
+              example: 1
+            percentage:
+              type: string
+              description: The percentage of topping decks of the deck type
+              example: '5.88'
+            mostSuccessful:
+              $ref: '#/components/schemas/TopDeckType_mostSuccessful'
+    Decklist:
+      required:
+        - _id
+        - deckType
+        - event
+        - placement
+        - player
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The id of the decklist
+          example: 6662f76ed85c2977d3561c3c
+        placement:
+          type: integer
+          description: Placement of the decklist at the event
+          example: 1
+        deckType:
+          $ref: '#/components/schemas/DeckType'
+        event:
+          $ref: '#/components/schemas/Event'
+        player:
+          $ref: '#/components/schemas/Player'
+        decklist:
+          $ref: '#/components/schemas/Decklist_decklist'
+    Winner:
+      required:
+        - deck
+        - player
+      type: object
+      properties:
+        deck:
+          $ref: '#/components/schemas/Decklist'
+        player:
+          $ref: '#/components/schemas/Player'
+    Card:
+      type: object
+      properties:
+        count:
+          type: number
+          description: Amount of copies
+          enum:
+            - 1
+            - 2
+            - 3
+        card:
+          type: string
+          description: Id of the card
+    inline_response_200:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Message regarding event types
+          example: 'The following event types are valid slugs for the /type/:slug endpoint:'
+        eventTypes:
+          type: array
+          description: List of event types
+          items:
+            type: string
+            example: '["wcq","ycs","team-ycs","remote-ycs"]'
+    inline_response_200_1:
+      type: object
+      properties:
+        totalDecks:
+          type: integer
+          example: 1
+        deckTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopDeckType'
+    Player_socials:
+      type: object
+      properties:
+        youtube:
+          type: string
+          example: JoshuaSchmidtYGO
+        twitch:
+          type: string
+          example: joshuaschmidtygo
+        twitter:
+          type: string
+          example: Gamebreak0r
+      description: Object of links to the player's socials
+    Event_type:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the event type
+          example: YCS
+        slug:
+          type: string
+          description: The slug of the event type
+          example: ycs
+      description: The type of the event
+    TopDeckType_mostSuccessful:
+      required:
+        - _id
+        - event
+        - placement
+        - player
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id of decklist
+          example: 6662f76ed85c2977d3561c3c
+        placement:
+          type: integer
+          description: The placement of the decklist
+          example: 1
+        player:
+          type: string
+          description: Name of the player
+          example: Joshua Schmidt
+        event:
+          type: string
+          description: Name of the event
+          example: YCS Bologna 2023
+    Decklist_decklist:
+      type: object
+      properties:
+        mainDeck:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        extraDeck:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+        sideDeck:
+          type: array
+          items:
+            $ref: '#/components/schemas/Card'
+      description: The decklist itself
